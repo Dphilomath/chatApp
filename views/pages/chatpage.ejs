@@ -1,0 +1,58 @@
+<%- include('../partials/header') %>
+
+
+<div class="container">
+    <h2>Welcome to <%=chatRoom%> Chatroom <span style="color:rgb(24, 68, 68)"><%= user %></span></h2>
+    <ul id="messages"></ul>
+    <form id="form">
+        <div class="form-group">
+            <input type="text" class="form-control" id="message" placeholder="message">
+        </div>
+        <input type="submit">
+    </form>
+</div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+  var user = document.querySelector("span").innerText
+  console.log(user)
+  var socket = io();
+  var messages = document.getElementById('messages');   
+  var form = document.getElementById('form');
+  var input = document.getElementById('message');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    if (input.value) {
+      socket.emit('chat message', {msg: input.value, user: user });
+      input.value = '';
+    }
+  });
+
+  socket.on("disconnected", function(msg) {
+    var item = document.createElement('div');
+    item.textContent = msg;
+    messages.appendChild(item);
+    window.scrollTo(0, document.body.scrollHeight);
+  })
+
+  socket.on("welcome", msg=>{
+    var item = document.createElement('div');
+    item.textContent = msg;
+    messages.appendChild(item);
+    window.scrollTo(0, document.body.scrollHeight);
+  })
+
+
+  socket.on('chat message', function(data) {
+    var item = document.createElement('li');
+    item.textContent = data.msg;
+    messages.appendChild(item);
+    window.scrollTo(0, document.body.scrollHeight);
+  });
+</script>
+
+<%- include('../partials/footer') %>
