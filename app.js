@@ -36,9 +36,12 @@ app.post("/chat", function(req, res){
 
 io.on('connection', (socket) => {
 
-    console.log('a user connected');
+    console.log(`a user connected`);
 
-    socket.emit("welcome", "Hey Welcome")
+    socket.on("welcome", data=>{
+        console.log(data)
+        socket.emit("welcome", `glad to see you here ${data.user}!!`);
+    })
 
     socket.broadcast.emit('connected',`A new user joined`)
 
