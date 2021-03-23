@@ -1,6 +1,6 @@
 <%- include('../partials/header') %>
 
-<% let r = Math.floor(255*Math.random()),g=Math.floor(255*Math.random()), b=Math.floor(255*Math.random())
+<% let r = Math.floor(200*Math.random()),g=Math.floor(200*Math.random()), b=Math.floor(200*Math.random())
    let color = "rgb("+r+", "+g+", "+b+")" %>
 <div class="container">
     <h2>Welcome to <span id="chatroom"><%=chatRoom%></span> chatroom <span id="user" style="color:<%= color%>"><%= user %></span></h2>
@@ -55,7 +55,11 @@
 
   socket.on('chat message', function(data) {
     var item = document.createElement('div');
+    item.classList.add("message-item");
+    
     var sender = document.createElement('li');
+    sender.classList.add("sender-item");
+
     var message = document.createElement('p');
     message.textContent = data.msg;
     sender.textContent = data.user;

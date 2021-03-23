@@ -7,3 +7,24 @@ body{
 .container{
    width:50%;
 }
+
+li{
+   list-style: none;
+}
+
+.sender-item{   
+   font-weight: 700;
+}
+
+.message-item{
+   border-radius:10px ;
+   margin:10px 0px;
+   padding:5px 20px;
+   text-align: start;
+   width: max-content;
+   max-width:400px;
+   display:flex;
+   flex-wrap:wrap ;
+   background-color: darkblue;
+   color:white;
+}
