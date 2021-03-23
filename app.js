@@ -34,33 +34,57 @@ app.post("/chat", function(req, res){
     res.render("pages/chatpage", {chatRoom:chatRoom, user:user})
 })
 
-io.on('connection', (socket) => {
+//store connected users
+var userList = new Map()
 
+io.on('connection', (socket) => {
+    var chatroom="";
     console.log(`a user connected`);
 
-    socket.on("welcome", data=>{
-        console.log(data)
-        socket.emit("welcome", `glad to see you here ${data.user}!!`);
-    })
 
-    socket.broadcast.emit('connected',`A new user joined`)
+    //on connection
+    socket.on("welcome", data=>{
+        chatroom = data.chatroom
+        console.log(data)
+        socket.join(chatroom)
+        io.in(chatroom).emit("welcome", `glad to see you here ${data.user}!!`);
+        
+        userList.set(socket.id, data.user)
+    })
+    
+    // socket.broadcast.emit('connected',`A new user joined`)
+    
 
     socket.on('disconnect', () => {
         console.log('user disconnected');
-        io.emit('disconnected', 'Someone just left')
     });
+
+    socket.on("disconnecting", ()=>{
+        let leavingUser = userList.get(socket.id)
+        let leavingRoom
+        // console.log(socket.rooms)
+        socket.rooms.forEach(element => {
+            leavingRoom = element
+        });
+        socket.to(leavingRoom).emit("disconnected", `${leavingUser} just left`)
+        userList.delete(socket.id)
+    })
 
     socket.on('chat message', data => {
         let newUser
-        let {msg, user} = data
+        let {msg, user, room} = data
 
-        io.emit('chat message', data);
+        // io.emit('chat message', data);
+
+        io.sockets.in(room).emit('chat message', data);
 
         let newmsg = new Message(
             {
                 _id: new mongoose.Types.ObjectId(),
-                message: msg
+                message: msg,
+                chatroom: room
             })
+ 
         let msgID = newmsg._id
 
         User.findOne({sender: user}, (err, found)=>{
