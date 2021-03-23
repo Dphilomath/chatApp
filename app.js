@@ -1,13 +1,13 @@
 const express = require("express"),
         app = express(),
-        mongoose = require("mongoose")
+        mongoose = require("mongoose"),
         server = require("http").createServer(app),
         path = require('path'),
         bodyParser = require("body-parser"),
         io = require('socket.io')(server),
         User  = require("./models/userSchema"),
-        Message = require("./models/messageSchema")
-        connect  = require("./dbconnection");
+        Message = require("./models/messageSchema"),
+        connect  = require("./dbconnection"),
         port = process.env.PORT||8080;
 
         connect.then(db  =>  {
@@ -36,9 +36,12 @@ app.post("/chat", function(req, res){
 
 io.on('connection', (socket) => {
 
-    console.log('a user connected');
+    console.log(`a user connected`);
 
-    socket.emit("welcome", "Hey Welcome")
+    socket.on("welcome", data=>{
+        console.log(data)
+        socket.emit("welcome", `glad to see you here ${data.user}!!`);
+    })
 
     socket.broadcast.emit('connected',`A new user joined`)
 
@@ -48,10 +51,8 @@ io.on('connection', (socket) => {
     });
 
     socket.on('chat message', data => {
-        var newUser
+        let newUser
         let {msg, user} = data
-        console.log("sender: "+ user)
-        console.log('message: ' + msg);
 
         io.emit('chat message', data);
 
@@ -60,10 +61,6 @@ io.on('connection', (socket) => {
                 _id: new mongoose.Types.ObjectId(),
                 message: msg
             })
-        newmsg.save((err, savedMsg)=>{
-            if(err) console.log(err)
-            else console.log(savedMsg)
-        })
         let msgID = newmsg._id
 
         User.findOne({sender: user}, (err, found)=>{
@@ -72,20 +69,27 @@ io.on('connection', (socket) => {
             if(err) console.log("ERROR: ",err)
 
             else if( found!=null) {
-                senderID = found._id
+                newmsg.sender = found._id
                 found.messages.push(msgID)
-                console.log(found)
+                found.save((err, saved)=>{
+                    if(err) console.log(err)
+                    else console.log(saved)
+                })
             }
 
             else {
                 newUser = new User({_id: new mongoose.Types.ObjectId(), sender: user})
+                newmsg.sender = newUser._id
                 newUser.messages.push(msgID)
                 newUser.save((err, saved)=>{
                 if(err) console.log(err)
                 else console.log("saved user: "+ saved)
             })
-            console.log("newUser "+ newUser)
         }
+            newmsg.save((err, savedMsg)=>{
+                if(err) console.log(err)
+                else console.log(savedMsg)
+            })
         })
     });
 });
