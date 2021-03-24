@@ -10,13 +10,14 @@
           <!-- <textarea class="form-control" id="message" placeholder="message" rows="1"></textarea> -->
           <input type="text" class="form-control" id="message" placeholder="message">
           <button class="btn btn-info">Send</button>
+          
+          <!-- add an option to change back ground color -->
+          <label for="background" class="form-label"></label>
+          <input type="color" class="form-control form-control-color" id="background" value="#00ced1"  title="Choose your color">
         </div>
     </form>
-    <!-- add an option to change back ground color -->
-    <!-- <div id ="bg">
-      <label style="float:right" for="background">Select background color</label>
-      <input id="background" style="float:right" type="color">  
-    </div> -->
+    
+    
     
 </div>
 
@@ -31,7 +32,16 @@
   var messages = document.getElementById('messages');   
   var form = document.getElementById('form');
   var input = document.getElementById('message');
+  var bg = document.getElementById('background')
 
+
+  window.onload = (event) => {
+    bg.value = "#00ced1"
+}
+ bg.addEventListener("change", ()=>{
+   messages.style.backgroundColor = bg.value
+ })
+ 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -50,7 +60,7 @@
     item.classList.add("notify")
     item.textContent = msg;
     messages.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
+    messages.scrollTop = messages.scrollHeight;
   })
 
   socket.on("welcome", msg=>{
@@ -58,7 +68,7 @@
     item.textContent = msg;
     item.classList.add("notify")
     messages.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
+    messages.scrollTop = messages.scrollHeight;
   })
 
 

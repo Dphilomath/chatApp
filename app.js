@@ -97,7 +97,7 @@ io.on('connection', (socket) => {
                 found.messages.push(msgID)
                 found.save((err, saved)=>{
                     if(err) console.log(err)
-                    else console.log(saved)
+                    // else console.log(saved)
                 })
             }
 
@@ -107,12 +107,12 @@ io.on('connection', (socket) => {
                 newUser.messages.push(msgID)
                 newUser.save((err, saved)=>{
                 if(err) console.log(err)
-                else console.log("saved user: "+ saved)
+                // else console.log("saved user: "+ saved)
             })
         }
             newmsg.save((err, savedMsg)=>{
                 if(err) console.log(err)
-                else console.log(savedMsg)
+                // else console.log(savedMsg)
             })
         })
     });

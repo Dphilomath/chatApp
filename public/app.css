@@ -11,12 +11,15 @@ body{
 }
 .container{
    height:100%;
-   width:60%;
+   position:fixed;
 }
 
 li{
    list-style: none;
 }
+ul::-webkit-scrollbar {
+   display: none;
+ }
 
 ul{
    border-radius:10px;
@@ -27,12 +30,17 @@ ul{
    /* max-height:70vh; */
    height:80%;
    overflow-y:scroll;
+    /* Hide scrollbar for IE, Edge and Firefox */
+   -ms-overflow-style: none;  /* IE and Edge */
+   scrollbar-width: none;  /* Firefox */
 }
 
 .sender-item{   
    font-weight: 700;
 }
-
+.send{
+margin:40px 20px;
+}
 .message-item{
    border-radius:10px ;
    margin:10px 0px;
@@ -55,9 +63,13 @@ ul{
    width: max-content;
    max-width:400px;
    height:auto;
-   line-break:anywhere;
+   overflow-wrap: break-word;
    background-color: #ebebeb;
    color:black;
+}
+#background{
+   width:20%;
+   margin:0px 20px;
 }
 
 .notify{
@@ -77,3 +89,4 @@ form{
    display: flex;
    align-items: flex-start;
 }
+
