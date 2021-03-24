@@ -5,15 +5,13 @@ body{
    display:flex;
    justify-content:center;
    align-items:center;
-   padding-top:2rem;
    height:100%;
    width:100vw;
 }
-.container{
-   height:100%;
-   position:fixed;
+.container-fluid{
+   height: 100%;
+   position:relative;
 }
-
 li{
    list-style: none;
 }
@@ -26,9 +24,9 @@ ul{
    display:flex;
    flex-direction:column;   
    background-color: darkturquoise;
-   padding:20px 10px;
+   padding:5px 5px;
    /* max-height:70vh; */
-   height:80%;
+   height:83%;
    overflow-y:scroll;
     /* Hide scrollbar for IE, Edge and Firefox */
    -ms-overflow-style: none;  /* IE and Edge */
@@ -39,7 +37,7 @@ ul{
    font-weight: 700;
 }
 .send{
-margin:40px 20px;
+margin:0.5vh 0px;
 }
 .message-item{
    border-radius:10px ;
@@ -68,8 +66,9 @@ margin:40px 20px;
    color:black;
 }
 #background{
+   float:right;
    width:20%;
-   margin:0px 20px;
+   /* margin:0pxpx; */
 }
 
 .notify{
@@ -81,12 +80,14 @@ margin:40px 20px;
 }
 
 form{
-   /* width:20rem; */
-   position: relative;   /* width: 100%; */
-   bottom: 20px;;
+   height: 5%;
+   width: 100%;
+   position: relative; 
+   bottom: 2vh;;
 }
 .send{
    display: flex;
    align-items: flex-start;
+   justify-content: space-between;
 }
 
