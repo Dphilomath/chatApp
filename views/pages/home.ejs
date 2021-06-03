@@ -1,21 +1,46 @@
 <%- include('../partials/header') %>
 <!-- <div class="overflow"> -->
-  <div class="container-fluid" style="position: relative; top:33%">
+  <div class="container">
     <h2 style="padding-bottom: 2rem;">Welcome to ChatApp</h2>
+    <h4 style="margin-bottom: 2rem;">Join an existing Chatroom</h4>
     <form action="/chat" method="POST">
         <div class="form-group">
-          <input type="text" name="user" required class="form-control" placeholder="Username">
+          
+          <input type="text" id="user" name="user" required class="form-control" placeholder="Choose a username">
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
             <select required class="form-control" name="chatroom">
                 <option value="">Select Chat Room</option>
                 <option value="cricket">Cricket</option>
                 <option value="football">Football</option>
                 <option value="music">Music</option>
             </select>
+        </div> -->
+        <div class="form-group">
+          <input class="form-control" id="chatroom" name="chatroom"  placeholder="Enter room name">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" id="key" name="key" required  placeholder="Enter Key">
         </div>
         <button class="btn btn-primary">Submit</button>
+        <a href="/newroom">Create new Chatroom</a>
     </form>
   </div>
+  </div>
+
+  <div class="alert alert-info alert-dismissible fade" role="alert">
+    <strong>taken for now!</strong> Choose a different username
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
 <!-- </div> -->
+
+<script>
+  if( <%=valid %>==false){
+     document.getElementsByClassName("alert")[0].classList.add("show");
+  }
+</script>
+
+
 <%- include('../partials/footer') %>
