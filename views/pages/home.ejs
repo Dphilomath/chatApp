@@ -1,11 +1,10 @@
 <%- include('../partials/header') %>
 <!-- <div class="overflow"> -->
-  <div class="container">
+  <div class="container home">
     <h2 style="padding-bottom: 2rem;">Welcome to ChatApp</h2>
     <h4 style="margin-bottom: 2rem;">Join an existing Chatroom</h4>
     <form action="/chat" method="POST">
         <div class="form-group">
-          
           <input type="text" id="user" name="user" required class="form-control" placeholder="Choose a username">
         </div>
         <!-- <div class="form-group">
@@ -26,19 +25,18 @@
         <a href="/newroom">Create new Chatroom</a>
     </form>
   </div>
-  </div>
 
-  <div class="alert alert-info alert-dismissible fade" role="alert">
+  <div class="alert alert-info alert-dismissible fade" style="display: none;" role="alert">
     <strong>taken for now!</strong> Choose a different username
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-<!-- </div> -->
 
 <script>
   if( <%=valid %>==false){
      document.getElementsByClassName("alert")[0].classList.add("show");
+     document.getElementsByClassName("alert")[0].style.display = "block";
   }
 </script>
 

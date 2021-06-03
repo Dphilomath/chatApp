@@ -8,10 +8,7 @@ body{
    height:100%;
    width:100vw;
 }
-.container-fluid{
-   height: 100%;
-   position:relative;
-}
+
 li{
    list-style: none;
 }
@@ -76,7 +73,6 @@ margin:0.5vh 0px;
    justify-content: center;
    font-weight: 600;
    color:white;
-   /* text-transform: uppercase; */
 }
 
 form{
@@ -91,3 +87,6 @@ form{
    justify-content: space-between;
 }
 
+.home{
+   width: 400px;
+}

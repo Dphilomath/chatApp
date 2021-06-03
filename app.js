@@ -18,7 +18,9 @@ const express = require("express"),
 
 //store connected users
 var userList = new Map()
-var ChatRooms = new Map()
+var roomKey = new Map()
+var rooms = new Map()
+
 
 app.set("view engine", "ejs")
 
@@ -45,28 +47,30 @@ app.post("/chat", function(req, res){
     for (let v of userList.values()) {
         if(v==user) {
             valid = false
-            return res.render("pages/home",{valid: valid});
+            return res.render("pages/home", {valid: valid});
         }
     }
     if(key){
-        if(chatRoom == ChatRooms.get(key)){
+        if(chatRoom == roomKey.get(key)){
+            rooms.get(chatRoom).add(user)
             res.render("pages/chatpage", {user, chatRoom, key})
         }else res.redirect(403, "/")
     } else{
+        if(rooms.has(chatRoom))   return res.send("Chatroom already exists");
         key =  randomstring.generate({
             length: 5,
             charset: "alphanumeric",
             capitalization:"lowercase"
         });
-        while(ChatRooms.has(key)==true){
+        while(roomKey.has(key)==true){
             key =  randomstring.generate({
                 length: 5,
                 charset: "alphanumeric",
                 capitalization:"lowercase"
             });
         }
-        
-        ChatRooms.set(key, chatRoom)
+        rooms.set(chatRoom, new Set().add(user))
+        roomKey.set(key, chatRoom)
         res.render("pages/chatpage", {user, chatRoom, key})
     }
 })
@@ -77,7 +81,7 @@ io.on('connection', (socket) => {
     var chatroom="";
     console.log(`a user connected`);
 
-
+    console.log(rooms.values())
     //on connection
     socket.on("welcome", data=>{
         chatroom = data.chatroom
@@ -87,13 +91,9 @@ io.on('connection', (socket) => {
         userList.set(socket.id, data.user)
     })
     
-    // socket.broadcast.emit('connected',`A new user joined`)
-    
-
     socket.on('disconnect', () => {
         console.log('user disconnected');
     });
-
     socket.on("disconnecting", ()=>{
         let leavingUser = userList.get(socket.id)
         let leavingRoom
@@ -101,8 +101,13 @@ io.on('connection', (socket) => {
         socket.rooms.forEach(element => {
             leavingRoom = element
         });
+        rooms.get(leavingRoom).delete(leavingUser)
         socket.to(leavingRoom).emit("disconnected", `${leavingUser} just left`)
         userList.delete(socket.id)
+
+        if(rooms.get(leavingRoom).size==0){
+            rooms.delete(leavingRoom)
+        }
     })
 
     socket.on('chat message', data => {
@@ -153,6 +158,7 @@ io.on('connection', (socket) => {
         // })
     });
 });
+
 
 
 server.listen(port, ()=>{
