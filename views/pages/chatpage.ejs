@@ -3,7 +3,8 @@
 <% let r = Math.floor(200*Math.random()),g=Math.floor(200*Math.random()), b=Math.floor(200*Math.random())
    let color = "rgb("+r+", "+g+", "+b+")" %>
 <div class="container-fluid">
-    <h3>Welcome to <span id="chatroom"><%=chatRoom%></span> chatroom <span id="user" style="color:<%= color%>"><%= user %></span></h2>
+    <h3>Welcome to <span id="chatroom"><%=chatRoom%></span> chatroom <span id="user" style="color:<%= color%>"><%= user %></span></h3>
+    <strong>key <span id="key"><%=key%></span></strong>
     <ul id="messages"></ul>
     <form id="form">
         <div class="form-group send">
@@ -15,9 +16,6 @@
           <input type="color" class="form-control form-control-color" id="background" value="#00ced1"  title="Choose your color">
         </div>
     </form>
-    
-    
-    
 </div>
 
 
@@ -30,7 +28,7 @@
   var socket = io();
   var messages = document.getElementById('messages');   
   var form = document.getElementById('form');
-  var input = document.getElementById('message');
+  var input = document.getElementById('message')
   var bg = document.getElementById('background')
 
 
@@ -54,6 +52,7 @@
     socket.emit("welcome", {user, chatroom})
   })
 
+
   socket.on("disconnected", function(msg) {
     var item = document.createElement('div');
     item.classList.add("notify")
@@ -69,7 +68,10 @@
     messages.appendChild(item);
     messages.scrollTop = messages.scrollHeight;
   })
-
+  // any event received by the client will be printed in the console.
+  // socket.onAny((event, ...args) => {
+  // console.log(event, args);
+  // }); 
 
   socket.on('chat message', function(data) {
     var item = document.createElement('div');
@@ -90,8 +92,6 @@
    
     messages.appendChild(item);
     messages.scrollTop = messages.scrollHeight;
-    
- 
   });
 </script>
 
