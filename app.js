@@ -33,10 +33,12 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname,'/public')))
 
 app.get("/", (req, res)=>{
-    res.render("pages/home", {valid: true})
+    let keyvalidity = req.query.v
+    res.render("pages/home", {valid: true, keyvalidity : keyvalidity})
 })
 app.get("/newroom", (req, res)=>{
-    res.render("pages/newroom")
+    let valid = req.query.valid
+    res.render("pages/newroom", {valid : valid})
 })
 
 app.post("/chat", function(req, res){
@@ -54,9 +56,9 @@ app.post("/chat", function(req, res){
         if(chatRoom == roomKey.get(key)){
             rooms.get(chatRoom).add(user)
             res.render("pages/chatpage", {user, chatRoom, key})
-        }else res.redirect(403, "/")
+        }else res.redirect("/?v=false")
     } else{
-        if(rooms.has(chatRoom))   return res.send("Chatroom already exists");
+        if(rooms.has(chatRoom))   return res.redirect("/newroom?valid=false");
         key =  randomstring.generate({
             length: 5,
             charset: "alphanumeric",

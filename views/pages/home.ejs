@@ -5,7 +5,13 @@
     <h4 style="margin-bottom: 2rem;">Join an existing Chatroom</h4>
     <form action="/chat" method="POST">
         <div class="form-group">
-          <input type="text" id="user" name="user" required class="form-control" placeholder="Choose a username">
+          <input type="text" id="user" name="user" required class="form-control" autofocus placeholder="Choose a username">
+        </div>
+        <div class="alert alert-info alert-dismissible fade" style="display: none;" role="alert">
+          <strong>taken for now!</strong> Choose a different username
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <!-- <div class="form-group">
             <select required class="form-control" name="chatroom">
@@ -21,22 +27,25 @@
         <div class="form-group">
           <input type="text" class="form-control" id="key" name="key" required  placeholder="Enter Key">
         </div>
+        <div class="alert alert-warning alert-dismissible fade" style="display: none;" role="alert">
+          <strong>Invalid key!</strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
         <button class="btn btn-primary">Submit</button>
         <a href="/newroom">Create new Chatroom</a>
     </form>
   </div>
 
-  <div class="alert alert-info alert-dismissible fade" style="display: none;" role="alert">
-    <strong>taken for now!</strong> Choose a different username
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-
 <script>
   if( <%=valid %>==false){
-     document.getElementsByClassName("alert")[0].classList.add("show");
-     document.getElementsByClassName("alert")[0].style.display = "block";
+     document.getElementsByClassName("alert-info")[0].classList.add("show");
+     document.getElementsByClassName("alert-info")[0].style.display = "block";
+  }
+  if( <%=keyvalidity %>==false){
+     document.getElementsByClassName("alert-warning")[0].classList.add("show");
+     document.getElementsByClassName("alert-warning")[0].style.display = "block";
   }
 </script>
 

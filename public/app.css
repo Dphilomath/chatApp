@@ -90,3 +90,12 @@ form{
 .home{
    width: 400px;
 }
+.container-fluid{
+   height: 100%;
+   position: relative;
+}
+#roomDetails{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+}

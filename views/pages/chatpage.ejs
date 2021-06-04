@@ -3,8 +3,10 @@
 <% let r = Math.floor(200*Math.random()),g=Math.floor(200*Math.random()), b=Math.floor(200*Math.random())
    let color = "rgb("+r+", "+g+", "+b+")" %>
 <div class="container-fluid">
+  <div id="roomDetails">
     <h3>Welcome to <span id="chatroom"><%=chatRoom%></span> chatroom <span id="user" style="color:<%= color%>"><%= user %></span></h3>
-    <strong>key <span id="key"><%=key%></span></strong>
+    <strong>key: <span id="key"><%=key%></span></strong>
+  </div>
     <ul id="messages"></ul>
     <form id="form">
         <div class="form-group send">
