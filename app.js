@@ -83,11 +83,11 @@ io.on('connection', (socket) => {
     var chatroom="";
     console.log(`a user connected`);
 
-    console.log(rooms.values())
+    //debug console.log(rooms.values())
     //on connection
     socket.on("welcome", data=>{
         chatroom = data.chatroom
-        console.log(data)
+        // console.log(data)
         socket.join(chatroom)
         io.in(chatroom).emit("welcome", `glad to see you here ${data.user}!!`);
         userList.set(socket.id, data.user)
@@ -99,7 +99,7 @@ io.on('connection', (socket) => {
     socket.on("disconnecting", ()=>{
         let leavingUser = userList.get(socket.id)
         let leavingRoom
-        // console.log(socket.rooms)
+        //debug console.log(socket.rooms)
         socket.rooms.forEach(element => {
             leavingRoom = element
         });
